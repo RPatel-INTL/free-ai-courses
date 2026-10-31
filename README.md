@@ -82,6 +82,16 @@ This is the source content for the free courses. You don't need to clone it to t
 - `CC4PMs-mastery-bonus/`, `codex-for-pms-skills-bonus/` — bonus material
 - `website/` — the [ccforpms.com](https://ccforpms.com) site
 
+## Organization developer training
+
+[Java Developer Workflow with Copilot and Azure DevOps](developer-azure-devops-course/README.md)
+is a separate, original hands-on course for beginner developers using Java 17, Maven, and VS Code.
+It covers Azure Boards, feature branches, Copilot planning and skills, testing, Azure Repos reviews,
+YAML pipelines, and publishing/consuming Maven packages through Azure Artifacts.
+Start with its instructor-guided setup; this course is not part of the FSPM CLI catalog.
+Its original files have a separate [MIT license](developer-azure-devops-course/LICENSE);
+the existing courses retain their license below.
+
 ## More from The Full Stack PM
 
 The free courses are the front porch. [Full Stack Mastery](https://fullstackpm.com/courses) is the membership: the PM Track (Research, Builder, Data, Docs) plus deeper standalone modules, with certificates and progress tracking on your account.
@@ -90,6 +100,6 @@ Start anywhere: [fullstackpm.com](https://fullstackpm.com)
 
 ## License
 
-This work is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
+Except for the separately licensed `developer-azure-devops-course/`, this work is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 Copyright © 2025–2026 Carl Vellotti. You may view and share this course content with attribution, but commercial use and modifications are not permitted.

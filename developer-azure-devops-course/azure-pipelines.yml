@@ -1,0 +1,95 @@
+# Training repository root must contain starter/, consumer/, and this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+
+# Azure Repos PR validation is configured through main's branch policies.
+parameters:
+  - name: publishPackage
+    displayName: Publish to the training Maven feed (trusted main only)
+    type: boolean
+    default: false
+  - name: feedName
+    type: string
+    default: training-feed
+  - name: feedUrl
+    type: string
+    default: https://pkgs.dev.azure.com/YOUR_ORGANIZATION/YOUR_PROJECT/_packaging/training-feed/maven/v1
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Validate
+    displayName: Build and test
+    jobs:
+      - job: MavenCI
+        steps:
+          - checkout: self
+            persistCredentials: false
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '17'
+              jdkArchitectureOption: x64
+              jdkSourceOption: PreInstalled
+          - bash: mvn -B -ntp -f starter/pom.xml clean verify
+            displayName: Maven verify
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: 'starter/target/surefire-reports/TEST-*.xml'
+              failTaskOnFailedTests: true
+              failTaskOnMissingResultsFile: true
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.SourcesDirectory)/starter/target/task-manager-1.0.0-SNAPSHOT.jar'
+              artifact: task-manager-jar
+  - stage: Publish
+    displayName: Publish Maven package
+    dependsOn: Validate
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.Reason'], 'PullRequest'), ${{ eq(parameters.publishPackage, true) }})
+    jobs:
+      - deployment: TrainingFeed
+        environment: training-packages
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                  persistCredentials: false
+                - task: JavaToolInstaller@0
+                  inputs:
+                    versionSpec: '17'
+                    jdkArchitectureOption: x64
+                    jdkSourceOption: PreInstalled
+                - task: MavenAuthenticate@0
+                  inputs:
+                    artifactsFeeds: ${{ parameters.feedName }}
+                - bash: |
+                    set -euo pipefail
+                    case "$AZURE_ARTIFACTS_URL" in
+                      https://pkgs.dev.azure.com/*/_packaging/*/maven/v1) ;;
+                      *) echo "Use the HTTPS Maven URL from the training feed's Connect to feed page."; exit 1 ;;
+                    esac
+                    if [[ "$AZURE_ARTIFACTS_URL" == *YOUR_* ]]; then
+                      echo "Replace the placeholder feed URL before publishing."
+                      exit 1
+                    fi
+                    mvn -B -ntp -f starter/pom.xml clean deploy -Pazure-artifacts "-DartifactFeedId=$FEED_ID"
+                  displayName: Verify and deploy package to feed
+                  env:
+                    AZURE_ARTIFACTS_URL: ${{ parameters.feedUrl }}
+                    FEED_ID: ${{ parameters.feedName }}
+                - bash: |
+                    set -euo pipefail
+                    mvn -B -ntp -U -f consumer/pom.xml verify -Pazure-artifacts \
+                      "-DartifactFeedId=$FEED_ID" \
+                      "-Dmaven.repo.local=$(Agent.TempDirectory)/consumer-repository"
+                    java -cp "consumer/target/classes:$(Agent.TempDirectory)/consumer-repository/org/example/training/task-manager/1.0.0-SNAPSHOT/task-manager-1.0.0-SNAPSHOT.jar" org.example.consumer.App
+                  displayName: Consume package using an isolated Maven cache
+                  env:
+                    AZURE_ARTIFACTS_URL: ${{ parameters.feedUrl }}
+                    FEED_ID: ${{ parameters.feedName }}

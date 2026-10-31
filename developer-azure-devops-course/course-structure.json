@@ -1,0 +1,27 @@
+{
+  "title": "Java delivery with Copilot and Azure DevOps",
+  "version": "1.0.0",
+  "entrypoint": "INSTRUCTOR.md",
+  "delivery": "VS Code Copilot Chat with file context; manual runbooks supported",
+  "validationStatus": "Implementer reports successful local JUnit, console, file-repository publish/consume, and YAML syntax checks; instructor classroom verification, live Azure validation, permissions review, and learner pilot pending",
+  "modules": [
+    { "id": "01-setup", "title": "Setup", "lesson": "lessons/01-setup.md", "exercise": "exercises/01-setup.md", "prerequisites": [], "next": "02-java-maven" },
+    { "id": "02-java-maven", "title": "Java and Maven", "lesson": "lessons/02-java-maven.md", "exercise": "exercises/02-java-maven.md", "prerequisites": ["01-setup"], "next": "03-azure-orientation" },
+    { "id": "03-azure-orientation", "title": "Azure orientation", "lesson": "lessons/03-azure-orientation.md", "exercise": "exercises/03-azure-orientation.md", "prerequisites": ["01-setup", "02-java-maven"], "next": "04-boards" },
+    { "id": "04-boards", "title": "Boards work items", "lesson": "lessons/04-boards.md", "exercise": "exercises/04-boards.md", "prerequisites": ["03-azure-orientation"], "next": "05-feature-branches" },
+    { "id": "05-feature-branches", "title": "Feature branches", "lesson": "lessons/05-feature-branches.md", "exercise": "exercises/05-feature-branches.md", "prerequisites": ["04-boards"], "next": "06-copilot-planning" },
+    { "id": "06-copilot-planning", "title": "Copilot planning", "lesson": "lessons/06-copilot-planning.md", "exercise": "exercises/06-copilot-planning.md", "prerequisites": ["02-java-maven", "05-feature-branches"], "next": "07-instructions-skills" },
+    { "id": "07-instructions-skills", "title": "Instructions and skills", "lesson": "lessons/07-instructions-skills.md", "exercise": "exercises/07-instructions-skills.md", "prerequisites": ["06-copilot-planning"], "next": "08-implement-debug" },
+    { "id": "08-implement-debug", "title": "Implement and debug", "lesson": "lessons/08-implement-debug.md", "exercise": "exercises/08-implement-debug.md", "prerequisites": ["07-instructions-skills"], "next": "09-junit-tests" },
+    { "id": "09-junit-tests", "title": "JUnit tests", "lesson": "lessons/09-junit-tests.md", "exercise": "exercises/09-junit-tests.md", "prerequisites": ["08-implement-debug"], "next": "10-linked-commits" },
+    { "id": "10-linked-commits", "title": "Linked commits", "lesson": "lessons/10-linked-commits.md", "exercise": "exercises/10-linked-commits.md", "prerequisites": ["09-junit-tests"], "next": "11-azure-repos-pr" },
+    { "id": "11-azure-repos-pr", "title": "Azure Repos pull requests", "lesson": "lessons/11-azure-repos-pr.md", "exercise": "exercises/11-azure-repos-pr.md", "prerequisites": ["10-linked-commits"], "next": "12-review" },
+    { "id": "12-review", "title": "Review and merge", "lesson": "lessons/12-review.md", "exercise": "exercises/12-review.md", "prerequisites": ["11-azure-repos-pr"], "next": "13-conflicts-revert" },
+    { "id": "13-conflicts-revert", "title": "Conflicts and revert", "lesson": "lessons/13-conflicts-revert.md", "exercise": "exercises/13-conflicts-revert.md", "prerequisites": ["12-review"], "next": "14-pipeline-concepts" },
+    { "id": "14-pipeline-concepts", "title": "Pipeline concepts", "lesson": "lessons/14-pipeline-concepts.md", "exercise": "exercises/14-pipeline-concepts.md", "prerequisites": ["13-conflicts-revert"], "next": "15-yaml-maven-ci" },
+    { "id": "15-yaml-maven-ci", "title": "YAML Maven CI", "lesson": "lessons/15-yaml-maven-ci.md", "exercise": "exercises/15-yaml-maven-ci.md", "prerequisites": ["14-pipeline-concepts"], "next": "16-artifacts-publish" },
+    { "id": "16-artifacts-publish", "title": "Artifacts feed publishing", "lesson": "lessons/16-artifacts-publish.md", "exercise": "exercises/16-artifacts-publish.md", "prerequisites": ["15-yaml-maven-ci"], "next": "17-consume-safeguards" },
+    { "id": "17-consume-safeguards", "title": "Consumption and safeguards", "lesson": "lessons/17-consume-safeguards.md", "exercise": "exercises/17-consume-safeguards.md", "prerequisites": ["16-artifacts-publish"], "next": "18-capstone" },
+    { "id": "18-capstone", "title": "Capstone", "lesson": "lessons/18-capstone.md", "exercise": "exercises/18-capstone.md", "prerequisites": ["17-consume-safeguards"], "next": null }
+  ]
+}

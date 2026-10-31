@@ -19,6 +19,7 @@ node_modules/
 !package-lock.json
 !tsconfig.json
 !course-materials/course-structure.json
+!developer-azure-devops-course/course-structure.json
 !website/vercel.json
 !mini-lessons/advanced-claude-workflows/.claude/skills/start-advanced-claude-workflows/assets/stop-hook-example.settings.json
 *.png
